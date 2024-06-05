@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { NavigationProp } from '@react-navigation/native';
 
 const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
@@ -16,6 +16,14 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
         setErrorMessage('Por favor, ingrese su correo y contraseña.');
       }
     };
+
+    useEffect(()=> {
+     let timer: NodeJS.Timeout;
+     if(errorMessage) {
+        timer = setTimeout(() => setErrorMessage(''), 3000);
+     }
+     return () => clearTimeout(timer);
+    }, [errorMessage])
 
 
   return (
