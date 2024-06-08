@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity} from 'react-native'
-import React, {useState, useEffect} from 'react'
 import { NavigationProp } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
