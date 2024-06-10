@@ -7,6 +7,7 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const logo = require('../screens/images/logo.png')
   
     const handleLogin = () => {
       // pendiente la validacion de inicio de sesion
@@ -29,7 +30,7 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.demo}>DEMO</Text>
-      <Image style={styles.logo} />
+      <Image source={logo} style={styles.logo} />
       <View style={styles.loginContainer}>
         <TextInput
           style={styles.input}
@@ -39,7 +40,7 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Clave"
+          placeholder="Contraseña"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
@@ -72,7 +73,6 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       aspectRatio: 4,
       alignSelf: 'center',
-      backgroundColor: 'transparent',
     },
     loginContainer: {
       width: '95%',

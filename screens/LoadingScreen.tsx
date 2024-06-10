@@ -10,9 +10,7 @@ const LoadingScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     return (
         <View style={styles.container}>
-
-            // Este logo no logro se vea , entiendo el ing. pidio se vea en la pantalla de carga y de inicio de sesion.
-            <Image source={require('../assets/logo.png')} style={styles.logo} />
+            <Image source={require('./images/logo.png')}  />
             <Text style={styles.demo}>Loading</Text>
             <Button title="Ir" onPress={handleLoginScreen} />
         </View>
@@ -29,7 +27,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: '95%',
-        height: undefined,
+        height: 10,
         aspectRatio: 4,
         marginBottom: 10,
         alignSelf: 'center',

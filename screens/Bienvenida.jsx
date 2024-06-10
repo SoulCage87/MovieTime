@@ -8,29 +8,31 @@ import Swiper from 'react-native-swiper';
 const Bienvenida = () => {
   const [movies, setMovies] = useState([]);
 
+  const fetchMovies = async () => {
+    try {
+      const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
+        params: {
+          include_adult: false,
+          include_video: false,
+          language: 'en-US',
+          page: 1,
+          sort_by: 'popularity.desc',
+        },
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZWUzN2ZjMjlmYmJmOTVhODgxZTE1ZGJhOGRhZmFkNyIsInN1YiI6IjY2NjI3MTcxODBlOWQxNzJhMzA5Yjc4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.snOffmVYlzh4biznarc9S5jjjjGSOzuaM0wi7m_jd_w',
+        },
+      });
+
+      setMovies(response.data.results);
+    
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
-          params: {
-            include_adult: false,
-            include_video: false,
-            language: 'en-US',
-            page: 1,
-            sort_by: 'popularity.desc',
-          },
-          headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZWUzN2ZjMjlmYmJmOTVhODgxZTE1ZGJhOGRhZmFkNyIsInN1YiI6IjY2NjI3MTcxODBlOWQxNzJhMzA5Yjc4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.snOffmVYlzh4biznarc9S5jjjjGSOzuaM0wi7m_jd_w',
-          },
-        });
-
-        setMovies(response.data.results);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchMovies();
   }, []);
 
