@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import Swiper from 'react-native-swiper';
+import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Carousel } from 'react-native-snap-carousel';
 
-// Ya se conecta a la api sin embargo no logro que al dar slide cambie de movie.
+const { width: viewportWidth } = Dimensions.get('window');
 
 const Bienvenida = () => {
   const [movies, setMovies] = useState([]);
@@ -25,32 +25,40 @@ const Bienvenida = () => {
       });
 
       setMovies(response.data.results);
-    
     } catch (error) {
       console.error(error);
     }
   };
 
-
   useEffect(() => {
     fetchMovies();
   }, []);
 
+  const renderItem = ({ item }) => {
+    return (
+      <View style={styles.slide}>
+        <Image
+          source={{ uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}` }}
+          style={styles.image}
+        />
+        <Text style={styles.text}>{item.title}</Text>
+        <Text style={styles.text}>Puntuación: {item.vote_average}/10</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Swiper style={styles.swiper}>
-        {movies.map(movie => (
-          <View key={movie.id} style={styles.slide}>
-            <Image
-              source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-             
-              style={styles.image}
-            />
-            <Text style={styles.text}>{movie.title}</Text>
-            <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
-          </View>
-        ))}
-      </Swiper>
+      {movies.length > 0 ? (
+        <Carousel
+          data={movies}
+          renderItem={renderItem}
+          sliderWidth={viewportWidth}
+          itemWidth={viewportWidth * 0.8}
+        />
+      ) : (
+        <Text>Cargando...</Text>
+      )}
     </View>
   );
 };
@@ -61,23 +69,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  swiper: {
-    width: '100%',
-    height: '85%',
-  },
   slide: {
-    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    height: 400,
+    padding: 10,
+    marginLeft: 25,
+    marginRight: 25,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   image: {
-    width: '80%',
-    height: '60%',
+    width: '100%',
+    height: '80%',
     marginBottom: 16,
   },
   text: {
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
