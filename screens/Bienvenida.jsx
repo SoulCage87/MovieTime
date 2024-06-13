@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const Bienvenida = () => {
   const [movies, setMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [inCinema, setInCinema] = useState([]);
+  const [search, setSearch] = useState('');
 
   const fetchMovies = async () => {
     try {
@@ -29,6 +32,30 @@ const Bienvenida = () => {
     }
   };
 
+  const searchMovie = async () => {
+    if (search.length > 0) {
+      try {
+        const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
+          params: {
+            query: search,
+            include_adult: false,
+            language: 'en-US',
+            page: 1,
+          },
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZWUzN2ZjMjlmYmJmOTVhODgxZTE1ZGJhOGRhZmFkNyIsInN1YiI6IjY2NjI3MTcxODBlOWQxNzJhMzA5Yjc4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.snOffmVYlzh4biznarc9S5jjjjGSOzuaM0wi7m_jd_w'
+          }
+        })
+        setSearchResults(response.data.results);
+      } catch (error) {
+        console.error(error.message)
+      }
+    } else {
+      setSearchResults([]);
+    }
+  }
+
   const fetchTopRatedMovies = async () => {
     try {
       const response = await axios.get('https://api.themoviedb.org/3/movie/top_rated', {
@@ -48,10 +75,35 @@ const Bienvenida = () => {
     }
   };
 
+  const fetchCinema = async () => {
+     try {
+      const response = await axios.get('https://api.themoviedb.org/3/movie/now_playing',{
+        params:{
+          language: 'en-US',
+          page: 1,
+
+        },
+        headers:{
+          accept: 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZWUzN2ZjMjlmYmJmOTVhODgxZTE1ZGJhOGRhZmFkNyIsInN1YiI6IjY2NjI3MTcxODBlOWQxNzJhMzA5Yjc4MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.snOffmVYlzh4biznarc9S5jjjjGSOzuaM0wi7m_jd_w'
+        }
+      })
+      setInCinema(response.data.results);
+
+     } catch (error) {
+      console.error(error.message)
+     }
+  }
+
   useEffect(() => {
     fetchMovies();
     fetchTopRatedMovies();
+    fetchCinema();
   }, []);
+
+  useEffect(() => {
+    searchMovie();
+  }, [search])
 
   const renderSwiper = (movies, title) => (
     <View style={styles.swiperContainer}>
@@ -59,10 +111,12 @@ const Bienvenida = () => {
       <SwiperFlatList style={styles.swiper} showsPagination={true} loop={true} autoplay={false}>
         {movies.map((movie) => (
           <View key={movie.id} style={styles.slide}>
-            <Image
-              source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-              style={styles.image}
-            />
+            {!movie.poster_path ?
+              <Text>Cargando...</Text>
+              : <Image
+                source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+                style={styles.image}
+              />}
             <Text style={styles.text}>{movie.title}</Text>
             <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
           </View>
@@ -73,8 +127,19 @@ const Bienvenida = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {renderSwiper(movies, 'Popular Movies')}
-      {renderSwiper(topRatedMovies, 'Top Rated Movies')}
+      <TextInput
+        style={styles.searchInput}
+        value={search}
+        onChangeText={setSearch}
+        placeholder='Search a movie...' />
+      {searchResults.length > 0
+        ? renderSwiper(searchResults, 'Search Results')
+        : <>
+          {renderSwiper(movies, 'Popular Movies')}
+          {renderSwiper(topRatedMovies, 'Top Rated Movies')}
+          {renderSwiper(inCinema, 'Now Playing in Cinema!')}
+        </>
+      }
     </ScrollView>
   );
 };
@@ -88,7 +153,7 @@ const styles = StyleSheet.create({
   },
   swiperContainer: {
     width: '100%',
-    height: 300, 
+    height: 300,
     marginBottom: 20,
   },
   swiper: {
@@ -118,6 +183,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 10,
   },
+  searchInput: {
+    width: '90%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    alignSelf: 'center',
+  }
 });
 
 export default Bienvenida;
