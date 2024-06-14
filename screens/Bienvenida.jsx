@@ -9,6 +9,7 @@ const Bienvenida = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [inCinema, setInCinema] = useState([]);
   const [search, setSearch] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const fetchMovies = async () => {
     try {
@@ -110,20 +111,43 @@ const Bienvenida = () => {
       <Text style={styles.sectionTitle}>{title}</Text>
       <SwiperFlatList style={styles.swiper} showsPagination={true} loop={true} autoplay={false}>
         {movies.map((movie) => (
-          <View key={movie.id} style={styles.slide}>
-            {!movie.poster_path ?
-              <Text>Cargando...</Text>
-              : <Image
-                source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-                style={styles.image}
-              />}
-            <Text style={styles.text}>{movie.title}</Text>
-            <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
-          </View>
+          <TouchableOpacity
+          key={movie.id}
+          style={styles.slide}
+          onPress={() => setSelectedMovie(movie)}
+        >
+          {!movie.poster_path ?
+            <Text>Cargando...</Text>
+            : <Image
+              source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+              style={styles.image}
+            />}
+          <Text style={styles.text}>{movie.title}</Text>
+          <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
+        </TouchableOpacity>
         ))}
       </SwiperFlatList>
     </View>
   );
+
+  if (selectedMovie) {
+    return (
+      <View style={styles.detailContainer}>
+        <ScrollView>
+          <Image
+            source={{ uri: `https://image.tmdb.org/t/p/w500/${selectedMovie.poster_path}` }}
+            style={styles.detailImage}
+          />
+          <Text style={styles.title}>{selectedMovie.title}</Text>
+          <Text style={styles.text}>Puntuación: {selectedMovie.vote_average}/10</Text>
+          <Text style={styles.text}>{selectedMovie.overview}</Text>
+          <TouchableOpacity onPress={() => setSelectedMovie(null)} style={styles.backButton}>
+            <Text style={styles.backButtonText}>Volver</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -192,6 +216,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     alignSelf: 'center',
+  },
+  detailContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  detailImage: {
+    width: '80%',
+    height: '50%',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
   }
 });
 
