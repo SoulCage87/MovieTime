@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, Dimensions, TextInput } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
+import { useNavigation } from '@react-navigation/native';
 
 const Bienvenida = () => {
   const [movies, setMovies] = useState([]);
@@ -9,7 +10,8 @@ const Bienvenida = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [inCinema, setInCinema] = useState([]);
   const [search, setSearch] = useState('');
-  const [selectedMovie, setSelectedMovie] = useState(null);
+ 
+  const navigation = useNavigation();
 
   const fetchMovies = async () => {
     try {
@@ -27,7 +29,7 @@ const Bienvenida = () => {
         },
       });
 
-      setMovies(response.data.results);
+      setMovies(response.data.results); 
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +116,7 @@ const Bienvenida = () => {
           <TouchableOpacity
           key={movie.id}
           style={styles.slide}
-          onPress={() => setSelectedMovie(movie)}
+          onPress={() => navigation.navigate('MovieDetail', { movie })}
         >
           {!movie.poster_path ?
             <Text>Cargando...</Text>
@@ -130,25 +132,7 @@ const Bienvenida = () => {
     </View>
   );
 
-  if (selectedMovie) {
-    return (
-      <View style={styles.detailContainer}>
-        <ScrollView>
-          <Image
-            source={{ uri: `https://image.tmdb.org/t/p/w500/${selectedMovie.poster_path}` }}
-            style={styles.detailImage}
-          />
-          <Text style={styles.title}>{selectedMovie.title}</Text>
-          <Text style={styles.text}>Puntuación: {selectedMovie.vote_average}/10</Text>
-          <Text style={styles.text}>{selectedMovie.overview}</Text>
-          <TouchableOpacity onPress={() => setSelectedMovie(null)} style={styles.backButton}>
-            <Text style={styles.backButtonText}>Volver</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    );
-  }
-
+  
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TextInput
@@ -231,7 +215,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-  }
+  },
+  
 });
 
 export default Bienvenida;
