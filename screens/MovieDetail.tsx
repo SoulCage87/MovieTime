@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
 
 const MovieDetail = ({route, navigation}) => {
@@ -21,6 +21,8 @@ const MovieDetail = ({route, navigation}) => {
   )
 }
 
+const {width} = Dimensions.get('window')
+
 const styles = StyleSheet.create({
     container: {
       flexGrow: 1,
@@ -28,9 +30,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     image: {
-      width: '80%',
-      height: 300,
-      marginBottom: 16,
+        width: width * 0.6, // Ajustar el ancho para que sea más estrecho
+        height: 300, // Ajustar la altura para que sea más alto
+        marginBottom: 16,
+        borderRadius: 10,
     },
     title: {
       fontSize: 24,
@@ -52,5 +55,5 @@ const styles = StyleSheet.create({
       fontSize: 18,
     },
   });
-  
+
 export default MovieDetail
