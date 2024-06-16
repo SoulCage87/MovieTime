@@ -2,15 +2,16 @@ import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
 
-
 const LoadingScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const handleLoginScreen = () => {
         navigation.navigate('LoginScreen');
     };
 
+    const logo = require('./images/logo.png')
+
     return (
         <View style={styles.container}>
-            <Image source={require('./images/logo.png')}  />
+            <Image source={logo}  />
             <Text style={styles.demo}>Loading</Text>
             <Button title="Ir" onPress={handleLoginScreen} />
         </View>

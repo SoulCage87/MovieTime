@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   swiperContainer: {
     width: '100%',
-    height: 400,
+    height: 450,
     marginBottom: 20,
   },
   swiper: {
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     height: 300, 
     marginBottom: 16,
     borderRadius: 10,
+    marginTop: 20
   },
   text: {
     fontSize: 18,
