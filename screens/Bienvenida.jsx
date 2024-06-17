@@ -19,7 +19,7 @@ const Bienvenida = () => {
         params: {
           include_adult: false,
           include_video: false,
-          language: 'en-US',
+          language: 'es-SP',
           page: 1,
           sort_by: 'popularity.desc',
         },
@@ -41,8 +41,8 @@ const Bienvenida = () => {
         const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
           params: {
             query: search,
-            include_adult: false,
-            language: 'en-US',
+            include_adult: true,
+            language: 'es-LA',
             page: 1,
           },
           headers: {
@@ -63,7 +63,7 @@ const Bienvenida = () => {
     try {
       const response = await axios.get('https://api.themoviedb.org/3/movie/top_rated', {
         params: {
-          language: 'en-US',
+          language: 'es-LA',
           page: 1,
         },
         headers: {
@@ -82,7 +82,7 @@ const Bienvenida = () => {
      try {
       const response = await axios.get('https://api.themoviedb.org/3/movie/now_playing',{
         params:{
-          language: 'en-US',
+          language: 'es-LA',
           page: 1,
 
         },
@@ -141,11 +141,11 @@ const Bienvenida = () => {
         value={search}
         onChangeText={setSearch} />
       {searchResults.length > 0
-        ? renderSwiper(searchResults, 'Search Results')
+        ? renderSwiper(searchResults, 'Resultados de tu Busqueda')
         : <>
-          {renderSwiper(movies, 'Popular Movies')}
-          {renderSwiper(topRatedMovies, 'Top Rated Movies')}
-          {renderSwiper(inCinema, 'Now Playing in Cinema!')}
+          {renderSwiper(movies, 'Peliculas Populares')}
+          {renderSwiper(topRatedMovies, 'Peliculas Mejores Valoradas!')}
+          {renderSwiper(inCinema, 'Solo en Cines!')}
         </>
       }
     </ScrollView>

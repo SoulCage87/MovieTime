@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, ImageBackground, View } from 'react-native';
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, ImageBackground, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 
@@ -34,9 +34,6 @@ const MovieDetail = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <ImageBackground source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}>
-        {/*<Text style={styles.title}>{movie.title}</Text>
-        <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
-        <Text style={styles.text}>{movie.overview}</Text>*/}
         {loading ? (
           <ActivityIndicator size="large" color='red'></ActivityIndicator>
         ) : trailerKey ? (
@@ -45,13 +42,12 @@ const MovieDetail = ({ route, navigation }) => {
             source={{ uri: `https://www.youtube.com/embed/${trailerKey}` }}
           />
         ) : (
-          <Text style={styles.text}>No hay trailer disponible</Text>
+          <Text style={styles.EmptyText}> trailer No disponible :( </Text>
         )}
         {/*<TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backButtonText}>Volver</Text>
         </TouchableOpacity>*/}
         <View>
-          <Text style={styles.title}>{movie.title}</Text>
           <Text style={styles.text}>Puntuación: 💛 {movie.vote_average}/10 💛</Text>
           <Text style={styles.text}> {movie.overview}</Text>
         </View>
@@ -91,6 +87,20 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: '#1C1614',
     padding: 10,
+  },
+  EmptyText: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 10,
+    color: 'white',
+    backgroundColor: '#1C1614',
+    padding: 10,
+    width: width * 0.9,
+    height: 200,
+    marginVertical: 150,
+    marginRight: 40,
+    left: 20,
+    marginTop: 300
   },
   backButton: {
     marginTop: 20,
