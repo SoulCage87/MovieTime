@@ -1,8 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View, Dimensions, TextInput, TouchableOpacity } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
-import { useNavigation } from '@react-navigation/native';
 
 const Bienvenida = () => {
   const [movies, setMovies] = useState([]);
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#9DD6EB',
+    backgroundColor: '#121212', //cambio de color 
   },
   image: {
     width: width * 0.6, 
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#fbff00', // letra amarillo
   },
   sectionTitle: {
     fontSize: 20,

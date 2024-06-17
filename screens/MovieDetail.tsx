@@ -1,6 +1,6 @@
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 const MovieDetail = ({route, navigation}) => {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     backButton: {
       marginTop: 20,
       padding: 10,
-      backgroundColor: '#007BFF',
+      backgroundColor: '#ff4400',
       borderRadius: 5,
     },
     backButtonText: {
