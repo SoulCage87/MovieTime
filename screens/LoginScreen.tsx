@@ -2,6 +2,7 @@ import { NavigationProp } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+
 const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     const [correo, setCorreo] = useState('');
@@ -29,7 +30,6 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.demo}>DEMO</Text>
       <Image source={logo} style={styles.logo} />
       <View style={styles.loginContainer}>
         <TextInput
