@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 16,
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: 'black'
   },
   image: {
     width: width * 0.6,

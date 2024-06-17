@@ -135,11 +135,11 @@ const Bienvenida = () => {
   
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.searchText}>Busca tu pelicula</Text>
       <TextInput
         style={styles.searchInput}
         value={search}
-        onChangeText={setSearch}
-        placeholder='Search a movie...' />
+        onChangeText={setSearch} />
       {searchResults.length > 0
         ? renderSwiper(searchResults, 'Search Results')
         : <>
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingVertical: 20,
+    backgroundColor: 'black'
   },
   swiperContainer: {
     width: '100%',
@@ -179,10 +180,11 @@ const styles = StyleSheet.create({
     height: 300, 
     marginBottom: 16,
     borderRadius: 10,
-    marginTop: 20
+    marginTop: 20,
+    margin: 20,
   },
   text: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
     color: '#fbff00', // letra amarillo
   },
@@ -192,6 +194,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 10,
     paddingLeft: 10,
+    color: '#fbff00', // letra amarillo
   },
   searchInput: {
     width: '90%',
@@ -202,6 +205,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 20,
     alignSelf: 'center',
+    color: 'white',
   },
   detailContainer: {
     flex: 1,
@@ -218,8 +222,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  
-});
+  searchText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  }});
 
 export default Bienvenida;
 
