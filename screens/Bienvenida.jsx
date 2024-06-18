@@ -10,6 +10,23 @@ const Bienvenida = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [inCinema, setInCinema] = useState([]);
   const [search, setSearch] = useState('');
+  const [watchlist, setWatchlist] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
+
+
+
+  const addToWatchlist = (movie) => {
+    if (!watchlist.some((item) => item.id === movie.id)) {
+      setWatchlist([...watchlist, movie]);
+    }
+  };
+  
+  const likeMovie = (movie) => {
+    if (!likedMovies.some((item) => item.id === movie.id)) {
+      setLikedMovies([...likedMovies, movie]);
+    }
+  };
+  
  
   const navigation = useNavigation();
 
@@ -113,24 +130,33 @@ const Bienvenida = () => {
       <Text style={styles.sectionTitle}>{title}</Text>
       <SwiperFlatList style={styles.swiper} showsPagination={true} loop={true} autoplay={false}>
         {movies.map((movie) => (
-          <TouchableOpacity
-          key={movie.id}
-          style={styles.slide}
-          onPress={() => navigation.navigate('MovieDetail', { movie })}
-        >
-          {!movie.poster_path ?
-            <Text>Cargando...</Text>
-            : <Image
-              source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-              style={styles.image}
-            />}
-          <Text style={styles.text}>{movie.title}</Text>
-          <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
-        </TouchableOpacity>
+          <View key={movie.id} style={styles.slide}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MovieDetail', { movie })}
+            >
+              {!movie.poster_path ?
+                <Text>Cargando...</Text>
+                : <Image
+                  source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+                  style={styles.image}
+                />}
+              <Text style={styles.text}>{movie.title}</Text>
+              <Text style={styles.text}>Puntuación: {movie.vote_average}/10</Text>
+            </TouchableOpacity>
+            <View style={styles.actionButtons}>
+              <TouchableOpacity onPress={() => addToWatchlist(movie)}>
+                <Text style={styles.actionText}>Añadir a la Lista</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => likeMovie(movie)}>
+                <Text style={styles.actionText}>Like</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         ))}
       </SwiperFlatList>
     </View>
   );
+  
 
   
   return (
@@ -226,6 +252,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     alignSelf: 'center'
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
+    marginTop: 10,
+  },
+  actionText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fbff00',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: '#333',
+    borderRadius: 5,
+    
   }});
 
 export default Bienvenida;
