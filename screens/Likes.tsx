@@ -7,7 +7,7 @@ const {likedMovies} = route.params
 
   return (
     <ScrollView style={styles.container}>
-    <Text style={styles.title}>Lista de Seguimiento</Text>
+    <Text style={styles.title}>Likeadas</Text>
     <FlatList
         data={likedMovies}
         keyExtractor={(item) => item.id.toString()}

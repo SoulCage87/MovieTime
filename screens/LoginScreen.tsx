@@ -11,11 +11,10 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const logo = require('../screens/images/logo.png')
   
     const handleLogin = () => {
-      // pendiente la validacion de inicio de sesion
       if (correo && password) {
         navigation.navigate('Bienvenida');
       } else {
-        setErrorMessage('Por favor, ingrese su correo y contraseña.');
+        setErrorMessage('Por favor, ingrese su usuario y contraseña.');
       }
     };
 
@@ -34,7 +33,7 @@ const LoginScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
       <View style={styles.loginContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Correo"
+          placeholder="User"
           value={correo}
           onChangeText={setCorreo}
         />

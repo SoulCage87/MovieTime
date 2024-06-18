@@ -1,19 +1,24 @@
 import { NavigationProp } from '@react-navigation/native';
-import React from 'react';
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Button, Image, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
 const LoadingScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const handleLoginScreen = () => {
         navigation.navigate('LoginScreen');
     };
 
+    const waitingTime = 5000;
+
+    useEffect(() => {
+        setTimeout(handleLoginScreen, waitingTime);
+    }, [])
+
     const logo = require('./images/logo.png')
 
     return (
         <View style={styles.container}>
-            <Image source={logo}  />
-            <Text style={styles.demo}>Loading</Text>
-            <Button title="Ir" onPress={handleLoginScreen} />
+            <Image source={logo} style={styles.logo}  />
+            <ActivityIndicator size="large" color='red'></ActivityIndicator>
         </View>
         
     );
@@ -22,31 +27,17 @@ const LoadingScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#F78790',
+        backgroundColor:'white',
         alignItems: 'center',
         justifyContent: 'center',
     },
     logo: {
-        width: '95%',
-        height: 10,
+        width: 55,
+        height: 100,
         aspectRatio: 4,
         marginBottom: 10,
         alignSelf: 'center',
-        marginTop:0,
     },
-    demo: {
-        fontSize: 14,
-        color:"white",
-        fontWeight: 'light',
-        marginBottom: 20,
-      },
-      button: {
-        backgroundColor: 'transparent', 
-        borderWidth: 1,
-        borderColor: 'white', 
-        padding: 10,
-        borderRadius: 5,
-      },
 });
 
 export default LoadingScreen;
