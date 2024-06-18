@@ -14,18 +14,86 @@ const Bienvenida = () => {
   const [likedMovies, setLikedMovies] = useState([]);  
 
 
-
-  const addToWatchlist = (movie) => {
-    if (!watchlist.some((item) => item.id === movie.id)) {
-      setWatchlist([...watchlist, movie]);
+  const fetchRequestToken = async () => {
+    try {
+      const response = await axios.get('https://api.themoviedb.org/3/authentication/token/new', {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+        },
+      });
+      return response.data.request_token;
+    } catch (error) {
+      console.error('Error fetching request token:', error);
     }
   };
   
-  const likeMovie = (movie) => {
-    if (!likedMovies.some((item) => item.id === movie.id)) {
-      setLikedMovies([...likedMovies, movie]);
+
+
+  const authorizeRequestToken = (requestToken) => {
+    const authorizationUrl = `https://www.themoviedb.org/authenticate/${requestToken}`;
+    
+    Linking.openURL(authorizationUrl);
+  };
+
+  
+
+  const fetchSessionId = async (requestToken) => {
+    try {
+      const response = await axios.post('https://api.themoviedb.org/3/authentication/session/new', {
+        request_token: requestToken,
+      }, {
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+        },
+      });
+      return response.data.session_id;
+    } catch (error) {
+      console.error('Error fetching session id:', error);
     }
-  };  
+  };
+
+  
+
+  const addToWatchlist = async (sessionId, accountId, movieId) => {
+    try {
+      const response = await axios.post(`https://api.themoviedb.org/3/account/${accountId}/watchlist`, {
+        media_type: 'movie',
+        media_id: movieId,
+        watchlist: true,
+      }, {
+        params: { session_id: sessionId },
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+        },
+      });
+      console.log('Added to watchlist:', response.data);
+    } catch (error) {
+      console.error('Error adding to watchlist:', error);
+    }
+  };
+  
+  const likeMovie = async (sessionId, accountId, movieId) => {
+    try {
+      const response = await axios.post(`https://api.themoviedb.org/3/account/${accountId}/favorite`, {
+        media_type: 'movie',
+        media_id: movieId,
+        favorite: true,
+      }, {
+        params: { session_id: sessionId },
+        headers: {
+          accept: 'application/json',
+          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
+        },
+      });
+      console.log('Added to favorites:', response.data);
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+    }
+  };
+    
   
  
   const navigation = useNavigation();
