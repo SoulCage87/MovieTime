@@ -11,7 +11,7 @@ const Bienvenida = () => {
   const [inCinema, setInCinema] = useState([]);
   const [search, setSearch] = useState('');
   const [watchlist, setWatchlist] = useState([]);
-  const [likedMovies, setLikedMovies] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);  
 
 
 
@@ -25,7 +25,7 @@ const Bienvenida = () => {
     if (!likedMovies.some((item) => item.id === movie.id)) {
       setLikedMovies([...likedMovies, movie]);
     }
-  };
+  };  
   
  
   const navigation = useNavigation();
@@ -156,6 +156,7 @@ const Bienvenida = () => {
       </SwiperFlatList>
     </View>
   );
+  
   
 
   
