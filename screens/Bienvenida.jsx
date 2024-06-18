@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 
 const Bienvenida = () => {
@@ -13,84 +13,22 @@ const Bienvenida = () => {
   const [watchlist, setWatchlist] = useState([]);
   const [likedMovies, setLikedMovies] = useState([]);  
 
-
-  const fetchRequestToken = async () => {
-    try {
-      const response = await axios.get('https://api.themoviedb.org/3/authentication/token/new', {
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
-        },
-      });
-      return response.data.request_token;
-    } catch (error) {
-      console.error('Error fetching request token:', error);
+  const addToWatchlist =  (movieid) => {
+    if(!watchlist.includes(movieid)){
+      setWatchlist([...watchlist, movieid])
+      Alert.alert('Disfruta!', `Haz añadido ${movieid.title} a tu lista`)
+      console.log(watchlist)
+    }else {
+      Alert.alert('Alerta!', 'Ya esta agregada')
     }
   };
   
-
-
-  const authorizeRequestToken = (requestToken) => {
-    const authorizationUrl = `https://www.themoviedb.org/authenticate/${requestToken}`;
-    
-    Linking.openURL(authorizationUrl);
-  };
-
-  
-
-  const fetchSessionId = async (requestToken) => {
-    try {
-      const response = await axios.post('https://api.themoviedb.org/3/authentication/session/new', {
-        request_token: requestToken,
-      }, {
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
-        },
-      });
-      return response.data.session_id;
-    } catch (error) {
-      console.error('Error fetching session id:', error);
-    }
-  };
-
-  
-
-  const addToWatchlist = async (sessionId, accountId, movieId) => {
-    try {
-      const response = await axios.post(`https://api.themoviedb.org/3/account/${accountId}/watchlist`, {
-        media_type: 'movie',
-        media_id: movieId,
-        watchlist: true,
-      }, {
-        params: { session_id: sessionId },
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
-        },
-      });
-      console.log('Added to watchlist:', response.data);
-    } catch (error) {
-      console.error('Error adding to watchlist:', error);
-    }
-  };
-  
-  const likeMovie = async (sessionId, accountId, movieId) => {
-    try {
-      const response = await axios.post(`https://api.themoviedb.org/3/account/${accountId}/favorite`, {
-        media_type: 'movie',
-        media_id: movieId,
-        favorite: true,
-      }, {
-        params: { session_id: sessionId },
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer YOUR_ACCESS_TOKEN',
-        },
-      });
-      console.log('Added to favorites:', response.data);
-    } catch (error) {
-      console.error('Error adding to favorites:', error);
+  const likeMovie = (movieid) => {
+    if(!likedMovies.includes(movieid)){
+      setLikedMovies([...likedMovies, movieid])
+      Alert.alert('Disfruta!', `Le has dado like`)
+    }else {
+      Alert.alert('Alerta!', 'Ya le diste like a esta peli')
     }
   };
     
@@ -235,6 +173,18 @@ const Bienvenida = () => {
         style={styles.searchInput}
         value={search}
         onChangeText={setSearch} />
+          <TouchableOpacity
+        style={[styles.buttonFavs, styles.navigationButton]}
+        onPress={() => navigation.navigate('Favorites', {watchlist})}
+      >
+        <Text style={styles.buttonText}>Ver Favoritos</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.buttonFavs, styles.navigationButton]}
+        onPress={() => navigation.navigate('Likes', {likedMovies})}
+      >
+        <Text style={styles.buttonText}>Ver Peliculas Likeadas</Text>
+      </TouchableOpacity>
       {searchResults.length > 0
         ? renderSwiper(searchResults, 'Resultados de tu Busqueda')
         : <>
@@ -336,8 +286,34 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: '#333',
     borderRadius: 5,
-    
-  }});
+  },
+  navigationButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'lightblue',
+    borderRadius: 5,
+  },
+  navigationButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttonFavs: {
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'lightblue',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  navigationButton: {
+    backgroundColor: 'lightgreen',
+  },
+  buttonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+});
 
 export default Bienvenida;
 

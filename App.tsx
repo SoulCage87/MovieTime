@@ -5,6 +5,8 @@ import Bienvenida from './screens/Bienvenida';
 import LoadingScreen from './screens/LoadingScreen';
 import LoginScreen from './screens/LoginScreen';
 import MovieDetail from './screens/MovieDetail';
+import Favorites from './screens/Favorites';
+import Likes from './screens/Likes';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +18,8 @@ const App = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="Bienvenida" component={Bienvenida} />
         <Stack.Screen name='MovieDetail' component={MovieDetail} />
+        <Stack.Screen name='Favorites' component={Favorites} />
+        <Stack.Screen name='Likes' component={Likes} />
       </Stack.Navigator>
     </NavigationContainer>
   );
